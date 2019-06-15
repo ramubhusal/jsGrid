@@ -1,0 +1,150 @@
+*{
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    font-family: Arial;
+}
+
+h2{
+    text-align: center;
+    font-size: 18px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: white;
+    padding: 30px 0;
+}
+
+/* Table Styles */
+
+.raGrid_segment{
+    margin: 10px 70px 70px;
+    box-shadow: 0px 35px 50px rgba( 0, 0, 0, 0.2 );
+}
+
+.raGrid {
+    border-radius: 5px;
+    font-size: 12px;
+    font-weight: normal;
+    border: 1px solid #f3f3f3;
+    border-collapse: collapse;
+    width: 100%;
+    max-width: 100%;
+    white-space: nowrap;
+    background-color: white;
+    border-spacing: 0;
+}
+
+.raGrid th {
+	background-color: #3c8dbc;
+    font-weight: bold;
+    color: #fff;
+    line-height: 1.7;
+    white-space: nowrap;
+}
+
+.raGrid td, .raGrid th {
+    padding: 0.75em 1.5em;
+    text-align: left;
+}
+
+.raGrid td {
+    border-right: 1px solid #f8f8f8;
+    font-size: 12px;
+}
+
+.raGrid tr {
+	transition: all .125s ease-in-out;
+}
+
+.raGrid tr:nth-child(2) {
+    background-color: #fff !important;
+}
+
+.raGrid tr:nth-child(2):hover {
+    background-color: #fff !important;
+}
+
+.raGrid tr:hover {
+	background-color: #3c8dbc80;
+    color: #fefefe;
+}
+
+.raGrid_filters {
+	width: 100%;
+	margin: 0px;
+	height: 26px;
+    padding: 0px 10px 0px 10px;
+}
+
+.selected {
+    background: #3c8dbc80;
+}
+.selected td {
+    color: #fefefe;
+}
+
+/* Responsive */
+
+@media (max-width: 767px) {
+    .raGrid {
+        display: block;
+        width: 100%;
+    }
+    .table-wrapper:before{
+        content: "Scroll horizontally >";
+        display: block;
+        text-align: right;
+        font-size: 11px;
+        color: white;
+        padding: 0 0 10px;
+    }
+    .raGrid thead, .raGrid tbody, .raGrid thead th {
+        display: block;
+    }
+    .raGrid thead th:last-child{
+        border-bottom: none;
+    }
+    .raGrid thead {
+        float: left;
+    }
+    .raGrid tbody {
+        width: auto;
+        position: relative;
+        overflow-x: auto;
+    }
+    .raGrid td, .raGrid th {
+        padding: 20px .625em .625em .625em;
+        height: 60px;
+        vertical-align: middle;
+        box-sizing: border-box;
+        overflow-x: hidden;
+        overflow-y: auto;
+        width: 120px;
+        font-size: 13px;
+        text-overflow: ellipsis;
+    }
+    .raGrid thead th {
+        text-align: left;
+        border-bottom: 1px solid #f7f7f9;
+    }
+    .raGrid tbody tr {
+        display: table-cell;
+    }
+    .raGrid tbody tr:nth-child(odd) {
+        background: none;
+    }
+    .raGrid tr:nth-child(even) {
+        background: transparent;
+    }
+    .raGrid tr td:nth-child(odd) {
+        background: #F8F8F8;
+        border-right: 1px solid #E6E4E4;
+    }
+    .raGrid tr td:nth-child(even) {
+        border-right: 1px solid #E6E4E4;
+    }
+    .raGrid tbody td {
+        display: block;
+        text-align: center;
+    }
+}

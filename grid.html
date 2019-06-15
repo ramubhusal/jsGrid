@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>jsGRID</title>
+	<script type="text/javascript" src="RaGrid.js"></script>
+</head>
+<body onload="loadGrid()">
+	<div class="row">
+		<div class="col-md-8" id="table_section" style="margin: auto;">
+			
+		</div>
+	</div>
+	<script type="text/javascript">
+		function loadGrid() {
+			var x = new RaGrid('table_section', 'fast', 'ID,  Name,   Address');
+			x.add_filters();
+			x.add_row(['12354', 'Ramu Bhusal', 'Lokanthali']);
+			x.add_row(['15489', 'Kiran Gautam', 'Balkot']);
+			// x.sayHi();
+		}
+	</script>
+</body>
+</html>
