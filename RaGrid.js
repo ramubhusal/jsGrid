@@ -18,7 +18,11 @@ class RaGrid {
 			link.media = 'all';
 			head.appendChild(link);
 		}
-		this.create_table();
+		if (document.getElementById(this.grid_id) == null) {
+			this.create_table();
+		} else {
+			this.add_event_on_row();
+		}
     }
 
     create_table() {
@@ -45,6 +49,21 @@ class RaGrid {
 		tbl.appendChild(tbdy);
 		segment.appendChild(tbl);
 		segment_main.appendChild(segment);
+	}
+
+	add_event_on_row() {
+		var this_obj = this;
+		var grid_obj = document.getElementById(this.grid_id);
+		/* for(var i = 1; i < grid_obj.tBodies[0].rows.length; i++) {
+			grid_obj.rows[i].onclick = function(event) {
+				this_obj.row_click(grid_obj.tBodies[0].rows[i], false);
+			}
+		} */
+		[...grid_obj.tBodies[0].rows].forEach(function(e) {
+			e.onclick = function(event) {
+				this_obj.row_click(e, false);
+			}
+		})
 	}
 
 	add_row(arr_val) {
@@ -130,8 +149,11 @@ class RaGrid {
 
     clear_all_selection() {
     	var trs = document.getElementById(this.grid_id).tBodies[0].getElementsByTagName('tr');
-        for (var i = 0; i < trs.length; i++) {
+        /* for (var i = 0; i < trs.length; i++) {
             trs[i].className = '';
-        }
+        } */
+		trs.forEach(function(e){
+            e.className = '';
+        });
     }
 }
