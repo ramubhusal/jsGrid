@@ -52,8 +52,17 @@ h2{
     font-size: 12px;
 }
 
+.sort_enabled {
+    cursor: pointer;
+}
+
+.sort_enabled:active { 
+    background-color: #fff;
+    color: #3c8dbc;
+}
+
 .raGrid tr {
-	transition: all .125s ease-in-out;
+	transition: all .09s ease-in-out;
 }
 
 .raGrid tr:nth-child(2) {
