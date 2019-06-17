@@ -1,5 +1,5 @@
 class RaGrid {
-	constructor(segment_id, grid_id, grid_columns) {
+	constructor(segment_id, grid_id, grid_columns = '') {
 		this.segment_id = segment_id;
     	this.grid_id = grid_id;
     	this.grid_columns = grid_columns.trim();
@@ -21,6 +21,7 @@ class RaGrid {
 		if (document.getElementById(this.grid_id) == null) {
 			this.create_table();
 		} else {
+			document.getElementById(this.grid_id).setAttribute('border', '1');
 			this.add_event_on_row();
 		}
     }
@@ -63,33 +64,47 @@ class RaGrid {
 			e.onclick = function(event) {
 				this_obj.row_click(e, false);
 			}
-		})
+		});
 	}
 
 	add_row(arr_val) {
 		var  x = this;
 		var table = document.getElementById(this.grid_id);
 		// Create an empty <tr> element and add it to the 1st position of the table:
-		var row = table.insertRow(2);
-		row.onclick = function(event) {
-			x.row_click(row, false);
-		}
-		var cell = [];
-		// Insert new cells (<td> elements) at the 1st and 2nd position of the "new" <tr> element:
-		for (var i = 0; i < this.splitted_grid_col.length; i++) {
-			cell[i] = row.insertCell(i);
-			cell[i].innerHTML = arr_val[i];
-			cell[i].innerText = arr_val[i];
+		if (typeof table.rows[1] == 'undefined') {
+			var row = table.insertRow(1);
+			row.onclick = function(event) {
+				x.row_click(row, false);
+			}
+			var cell = [];
+			// Insert new cells (<td> elements) at the 1st and 2nd position of the "new" <tr> element:
+			for (var i = 0; i < this.splitted_grid_col.length; i++) {
+				cell[i] = row.insertCell(i);
+				cell[i].innerHTML = arr_val[i];
+				cell[i].innerText = arr_val[i];
+			}
+		} else {
+			var row = table.insertRow(2);
+			row.onclick = function(event) {
+				x.row_click(row, false);
+			}
+			var cell = [];
+			// Insert new cells (<td> elements) at the 1st and 2nd position of the "new" <tr> element:
+			for (var i = 0; i < this.splitted_grid_col.length; i++) {
+				cell[i] = row.insertCell(i);
+				cell[i].innerHTML = arr_val[i];
+				cell[i].innerText = arr_val[i];
+			}
 		}
 	}
 
-	add_filters() {
+	add_filters(col_count) {
 		var this_class = this;
 		var table = document.getElementById(this.grid_id);
 		var row = table.insertRow(1);
 		row.setAttribute('class', 'ignore_hover');
 		var cell = [];
-		for (var i = 0; i < this.splitted_grid_col.length; i++) {
+		for (var i = 0; i < col_count; i++) {
 			cell[i] = row.insertCell(i);
 			cell[i].style.padding = '5px 10px 5px 10px';
 
@@ -129,9 +144,29 @@ class RaGrid {
         var td = tr[i].getElementsByTagName("td");
     }
 
+    set_id_index(col_idx, is_hidden) {
+    	var tbl_obj = document.getElementById(this.grid_id);
+    	[...tbl_obj.rows].forEach(function(e) {
+    		if (is_hidden == 'y') {
+    			e.cells[col_idx].style.display = 'none';
+    		} else {
+    			// e.cells[col_idx].style.display = 'block';
+    			e.cells[col_idx].style.width = '100px';
+
+    		}
+    	});
+    }
+
+    get_selected_row_id() {
+    	var tbl_obj = document.getElementById(this.grid_id);
+    	return tbl_obj.getElementsByClassName('selected')[0].cells[0].innerHTML;
+    }
+
 	toggle_row_selection(row) {
-        row.className = row.className == 'selected' ? '' : 'selected';
-        this.last_selected_rows = row;
+		if (row.rowIndex >= 2) {
+	        row.className = row.className == 'selected' ? '' : 'selected';
+	        this.last_selected_rows = row;
+	    }
     }
 
     row_click(row_obj, lock) {
@@ -152,8 +187,77 @@ class RaGrid {
         /* for (var i = 0; i < trs.length; i++) {
             trs[i].className = '';
         } */
-		trs.forEach(function(e){
+		[...trs].forEach(function(e){
             e.className = '';
         });
     }
+
+    enable_sorting() {
+    	var this_obj = this;
+    	var tbl_obj = document.getElementById(this.grid_id);
+    	var tbl_cells = tbl_obj.rows[0].cells;
+    	[...tbl_cells].forEach(function(e) {
+    		e.setAttribute('class', 'sort_enabled');
+    		e.onclick = function(event) {
+    			this_obj.sort_column(e.cellIndex);
+    		}
+    	});
+    }
+
+    sort_column(col_index) {
+		var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+		table = document.getElementById(this.grid_id);
+
+		switching = true;
+		// Set the sorting direction to ascending:
+  		dir = "asc";
+		/*Make a loop that will continue until
+		no switching has been done:*/
+		while (switching) {
+			//start by saying: no switching is done:
+			switching = false;
+			rows = table.rows;
+			/*Loop through all table rows (except the
+			first, which contains table headers):*/
+			for (i = 2; i < (rows.length - 1); i++) {
+				//start by saying there should be no switching:
+				shouldSwitch = false;
+				/*Get the two elements you want to compare,
+				one from current row and one from the next:*/
+				x = rows[i].getElementsByTagName("TD")[col_index];
+				y = rows[i + 1].getElementsByTagName("TD")[col_index];
+
+				/* Check if the two rows should switch place,
+				based on the direction, asc or desc: */
+				if (dir == "asc") {
+					if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+						// If so, mark as a switch and break the loop:
+						shouldSwitch = true;
+						break;
+					}
+				} else if (dir == "desc") {
+					if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+						// If so, mark as a switch and break the loop:
+						shouldSwitch = true;
+						break;
+					}
+				}
+			}
+			if (shouldSwitch) {
+				/* If a switch has been marked, make the switch
+				and mark that a switch has been done: */
+				rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+				switching = true;
+				// Each time a switch is done, increase this count by 1:
+				switchcount ++; 
+			} else {
+				/* If no switching has been done AND the direction is "asc",
+				set the direction to "desc" and run the while loop again. */
+				if (switchcount == 0 && dir == "asc") {
+					dir = "desc";
+					switching = true;
+				}
+			}
+		}
+	}
 }
