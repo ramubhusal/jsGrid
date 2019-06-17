@@ -11,38 +11,61 @@
 				<tr>
 					<th>ID</th>
 					<th>NAME</th>
-					<th>ADDRESS</th>
+					<th>TEAM</th>
 				</tr>
 				<tr>
-					<td>229</td>
-					<td>RAMOS</td>
-					<td>LOKA</td>
+					<td>220</td>
+					<td>SERGIO RAMOS</td>
+					<td>REAL MADRID</td>
 				</tr>
 				<tr>
-					<td>230</td>
-					<td>RAMOSa</td>
-					<td>LOKAa</td>
+					<td>221</td>
+					<td>VIRGIL VAN DJIK</td>
+					<td>LIVERPOOL</td>
 				</tr>
 				<tr>
-					<td>2292</td>
-					<td>RAMOasS</td>
-					<td>LOKdsaA</td>
+					<td>222</td>
+					<td>DAVID ALABA</td>
+					<td>BAYERN MUNCHEN</td>
 				</tr>
 				<tr>
-					<td>232</td>
-					<td>rawas</td>
-					<td>kaysa</td>
+					<td>223</td>
+					<td>MARQUINHOS</td>
+					<td>PARIS SAINT GERMAIN</td>
 				</tr>
 			</tbody>
 		</table>
 	</div>
+
+	<div>
+		<button type="button" onclick="get_selected_id()">Get Selected Row ID</button>
+	</div>
+
+	<p>
+		Next
+	</p>
+
+	<div id="sec_table">
+		
+	</div>
+
 	<script type="text/javascript">
 		function loadGrid() {
-			var x = new RaGrid('table_section', 'fast', 'ID,  Name,   Address');
-			x.add_filters();
-			//x.add_event_on_row(x);
-			// x.add_row(['12354', 'Ramu Bhusal', 'Lokanthali']);
-			// x.add_row(['15489', 'Kiran Gautam', 'Balkot']);
+			// var x = new RaGrid('table_section', 'fast', 'ID,  Name,   Address');
+			x = new RaGrid('table_section', 'fast');
+			x.set_id_index(0, 'n');
+			x.add_filters(3);
+			x.enable_sorting();
+
+			y = new RaGrid('sec_table', 'slow', 'SID, SNAME, LOCATION');
+			y.add_filters(3);
+			y.add_row(['123', 'Ramu', 'Nepal']);
+			y.add_row(['456', 'Kiran', 'Nepal']);
+		}
+
+		function get_selected_id() {
+			var m = x.get_selected_row_id();
+			alert(m)
 		}
 	</script>
 </body>
