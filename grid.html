@@ -5,67 +5,112 @@
 	<script type="text/javascript" src="RaGrid.js"></script>
 </head>
 <body onload="loadGrid()">
-	<div id="table_section" style="margin: auto;">
-		<table id="fast" class="raGrid">
+	<div style="position: fixed; font-size: 12px; top: 0; right: 0px; display: none; background-color: #3c8dbc;
+	padding: 20px; margin: 20px; border-radius: 10px;" id="validation_message">
+	</div>
+	<div id="table_section" style="margin: auto; width: 900px;">
+		<table id="defenders_table" class="raGrid">
 			<tbody>
 				<tr>
 					<th>ID</th>
-					<th>NAME</th>
-					<th>TEAM</th>
+					<th>Name</th>
+					<th>Team</th>
+					<th>Rating</th>
+				</tr>
+				<tr>
+					<td>188</td>
+					<td>Dani Alves</td>
+					<td>FC Barcelona</td>
+					<td>88 OVR</td>
 				</tr>
 				<tr>
 					<td>220</td>
-					<td>SERGIO RAMOS</td>
-					<td>REAL MADRID</td>
+					<td>Sergio Ramos</td>
+					<td>Real Madrid</td>
+					<td>87 OVR</td>
 				</tr>
 				<tr>
 					<td>221</td>
-					<td>VIRGIL VAN DJIK</td>
-					<td>LIVERPOOL</td>
+					<td>Virgil Van Djik</td>
+					<td>Liverpool</td>
+					<td>84 OVR</td>
 				</tr>
 				<tr>
 					<td>222</td>
-					<td>DAVID ALABA</td>
-					<td>BAYERN MUNCHEN</td>
+					<td>David Alaba</td>
+					<td>FC Bayern</td>
+					<td>88 OVR</td>
 				</tr>
 				<tr>
 					<td>223</td>
-					<td>MARQUINHOS</td>
-					<td>PARIS SAINT GERMAIN</td>
+					<td>Marquinhos</td>
+					<td>PSG</td>
+					<td>83 OVR</td>
 				</tr>
 			</tbody>
 		</table>
 	</div>
 
-	<div>
-		<button type="button" onclick="get_selected_id()">Get Selected Row ID</button>
+	<div style="margin: auto; padding: 20px; width: 200px;">
+		<button style="width: 200px; background-color: #3c8dbc; color: #fff; padding: 10px; border: none;" type="button" onclick="get_selected_id()">Get Selected Row ID</button>
 	</div>
 
-	<p>
-		Next
-	</p>
-
-	<div id="sec_table">
-		
-	</div>
+	<!-- <p>Next</p>
+	<div id="sec_table"></div> -->
 
 	<script type="text/javascript">
 		function loadGrid() {
-			// var x = new RaGrid('table_section', 'fast', 'ID,  Name,   Address');
-			x = new RaGrid('table_section', 'fast');
-			x.set_id_index(0, 'n');
-			x.add_filters(3);
-			x.enable_sorting();
+			/*
+				## Initialize Grid.
+				# First Parameter: ID of DIV under which the table is created. [In my case: id is table_section]
+				# Second Parameter: ID of the Table created with HTML. [In my case: id is defenders_table]
+				# Third Parameter: Required if the table is not created with HTML. [In my case I have already created table with HTML. So, i sent them blank.]
+				# Fourth Parameter: Enable or Disable Multiple Selection [Click Ctrl and Mouse Click to Select Multiple Rows.] [Expected Values y/n]
+			*/
+			def_tbl_obj = new RaGrid('table_section', 'defenders_table', '', 'y');
+			/*
+				## Use set_id_index to let the grid know that which column is your ID column and is it need to be hidden or not.
+				# First Parameter: Column Index [In my case first col is ID.]
+				# Second Parameter: Hide or Show the ID column. [Expected values y/n]
+			*/
+			def_tbl_obj.set_id_index(0, 'n');
+			/*
+				## Function to add inline filter in grid.
+				# First Parameter: Numbers of column upto which the filter is to be added.
+			*/
+			def_tbl_obj.add_filters(4);
+			/*
+				## Function to enable sorting of the values on grid.
+			*/
+			def_tbl_obj.enable_sorting();
 
-			y = new RaGrid('sec_table', 'slow', 'SID, SNAME, LOCATION');
+			/*y = new RaGrid('sec_table', 'slow', 'SID, SNAME, LOCATION');
 			y.add_filters(3);
 			y.add_row(['123', 'Ramu', 'Nepal']);
-			y.add_row(['456', 'Kiran', 'Nepal']);
+			y.add_row(['456', 'Kiran', 'Nepal']);*/
 		}
 
 		function get_selected_id() {
-			var m = x.get_selected_row_id();
-			alert(m)
+			/*
+				## Function to get the selected rows id from the grid.
+				# Returns Array.
+					First index: 'success' or 'error'.
+					Second index: 'Value' of id if success and Error message if 'error'.
+			*/
+			var sel_id = def_tbl_obj.get_selected_row_id();
+			if (sel_id[0] == 'success') {
+				document.getElementById('validation_message').innerHTML = 'Selected row id is: ' + sel_id[1];
+				document.getElementById('validation_message').style.display = 'block';
+				setTimeout(function() {
+					document.getElementById('validation_message').style.display = 'none';
+				}, 3000);
+			} else {
+				document.getElementById('validation_message').innerHTML = sel_id[1];
+				document.getElementById('validation_message').style.display = 'block';
+				setTimeout(function() {
+					document.getElementById('validation_message').style.display = 'none';
+				}, 3000);
+			}
 		}
 	</script>
 </body>
