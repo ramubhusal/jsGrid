@@ -1,5 +1,8 @@
 # raGrid
 Basic Grid Table.. 
+
+![alt text](https://github.com/ramubhusal/raGrid/blob/master/basic%20grid.jpg)
+
 It is a very basic Grid Table.
 You can use this in two ways.
 i. Create your table with HTML tags and call the class by providing table id.
