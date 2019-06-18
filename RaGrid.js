@@ -1,9 +1,10 @@
 class RaGrid {
-	constructor(segment_id, grid_id, grid_columns = '') {
+	constructor(segment_id, grid_id, grid_columns = '', enable_multiselect = 'n') {
 		this.segment_id = segment_id;
     	this.grid_id = grid_id;
     	this.grid_columns = grid_columns.trim();
     	this.splitted_grid_col = this.grid_columns.split(',');
+    	this.enable_multiselect = enable_multiselect;
 
     	this.last_selected_rows;
 
@@ -159,7 +160,22 @@ class RaGrid {
 
     get_selected_row_id() {
     	var tbl_obj = document.getElementById(this.grid_id);
-    	return tbl_obj.getElementsByClassName('selected')[0].cells[0].innerHTML;
+    	var return_val = [];
+    	if (tbl_obj.getElementsByClassName('selected').length == 0) {
+    		return_val = ['error', 'Please Select some Rows from Grid.'];
+    	} else if (tbl_obj.getElementsByClassName('selected').length > 1) {
+    		if (this.enable_multiselect == 'n') {
+    			return_val = ['error', 'Multi-selection is not enabled. Please select a single row.'];
+    		} else {
+    			var return_arr = [...tbl_obj.getElementsByClassName('selected')].map(function(e) {
+    				return e.cells[0].innerHTML;
+    			});
+    			return_val = ['success', return_arr];
+    		}
+    	} else {
+    		return_val = ['success', tbl_obj.getElementsByClassName('selected')[0].cells[0].innerHTML];
+    	}
+    	return return_val;
     }
 
 	toggle_row_selection(row) {
